@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * Class SessionManager maintains the sessions' model objects in the Network Go
- * Game server.
+ * Class SessionManager maintains the sessions' model objects in the Network Connect Four game server.
  *
- * @author  Alan Kaminsky
- * @version 21-Jan-2010
+ * @author  Michael Rinos
  */
 public class SessionManager
         implements ViewListener

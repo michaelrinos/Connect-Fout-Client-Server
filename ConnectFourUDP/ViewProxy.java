@@ -4,12 +4,11 @@ import java.net.DatagramSocket;
 import java.net.SocketAddress;
 
 /**
- * Class ViewProxy provides the network proxy for the view object in the Network
- * Go Game. The view proxy resides in the server program and communicates with
+ * Class ViewProxy provides the network proxy for the view object in the Network.
+ * The view proxy resides in the server program and communicates with
  * the client program.
  *
- * @author  Alan Kaminsky
- * @version 28-Jan-2010
+ * @author  Michael Rinos
  */
 public class ViewProxy implements ModelListener {
 

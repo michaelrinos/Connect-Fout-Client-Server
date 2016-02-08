@@ -6,11 +6,10 @@ import java.net.SocketAddress;
 
 /**
  * Class ModelProxy provides the network proxy for the model object in the
- * Network Go Game. The model proxy resides in the client program and
+ * Connect four Game. The model proxy resides in the client program and
  * communicates with the server program.
  *
- * @author  Alan Kaminsky
- * @version 21-Jan-2010
+ * @author  Michael Rinos
  */
 public class ModelProxy implements ViewListener {
 
