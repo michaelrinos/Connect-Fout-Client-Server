@@ -1,8 +1,4 @@
-import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Class SessionManager maintains the sessions' model objects in the Network Connect Four game server.

@@ -1,4 +1,6 @@
-//******************************************************************************
+/*
+/*/
+/******************************************************************************
 //
 // File:    MailboxManager.java
 // Package: ---
@@ -21,7 +23,8 @@
 // You may obtain a copy of the GNU General Public License on the World Wide Web
 // at http://www.gnu.org/licenses/gpl.html.
 //
-//******************************************************************************
+/*/
+/******************************************************************************
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -29,6 +32,7 @@ import java.net.DatagramSocket;
 import java.net.SocketAddress;
 import java.util.HashMap;
 
+*/
 /**
  * Class MailboxManager provides the server program's mailbox manager in the
  * Network Go Game. The mailbox manager keeps track of all view proxy objects,
@@ -37,7 +41,8 @@ import java.util.HashMap;
  *
  * @author  Alan Kaminsky
  * @version 28-Sep-2013
- */
+ *//*
+
 public class MailboxManager
 {
 
@@ -48,17 +53,21 @@ public class MailboxManager
     private HashMap<SocketAddress,ViewProxy> proxyMap =
             new HashMap<SocketAddress,ViewProxy>();
 
-    private byte[] payload = new byte [128]; /* CAREFUL OF BUFFER LENGTH */
+    private byte[] payload = new byte [128]; */
+/* CAREFUL OF BUFFER LENGTH *//*
+
 
     private SessionManager sessionManager = new SessionManager();
 
 // Exported constructors.
 
-    /**
+    */
+/**
      * Construct a new mailbox manager.
      *
      * @param  mailbox  Mailbox from which to read datagrams.
-     */
+     *//*
+
     public MailboxManager
     (DatagramSocket mailbox)
     {
@@ -67,12 +76,14 @@ public class MailboxManager
 
 // Exported operations.
 
-    /**
+    */
+/**
      * Receive and process the next datagram.
      *
      * @exception  IOException
      *     Thrown if an I/O error occurred.
-     */
+     *//*
+
     public void receiveMessage() throws IOException {
         DatagramPacket packet = new DatagramPacket(payload, payload.length);
         mailbox.receive(packet);
@@ -87,4 +98,4 @@ public class MailboxManager
             proxyMap.remove(clientAddress);
         }
     }
-}
+}*/

@@ -17,31 +17,27 @@ public class ConnectClient {
      * @exception throws and catches BindException in case the port is in use and all other exceptions caught
      */
     public static void main(String[] args){
-        if (args.length != 5) {
+        if (args.length != 3) {
             usage();
         }
         String serverhost = args[0];
         int serverport = Integer.parseInt(args[1]);
-        String clienthost = args[2];
-        int clientport = Integer.parseInt(args[3]);
-        String session = args[4];
+        String session = args[2];
+
 
         try {
-            DatagramSocket mailbox = new DatagramSocket(
-                    new InetSocketAddress(clienthost, clientport));
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(serverhost, serverport));      //Connect to server
+            ModelProxy proxy = new ModelProxy(socket);
 
-            final ModelProxy proxy = new ModelProxy(mailbox,
-                    new InetSocketAddress(serverhost, serverport));
+            ConnectUI view = ConnectUI.create(session);                         //Create the view
 
-            ConnectUI view = ConnectUI.create(session);
-            proxy.setModelListener(view);
-            view.setViewListener(proxy);
-            proxy.join(null, session);
-            view.reset();
+            proxy.setModelListener(view);                                       //Set the view for the proxy
+            view.setViewListener(proxy);                                        //Set the proxy for the view
 
-        } catch (BindException e){
-            System.err.println("The host or port is in use");
-            System.exit(1);
+            proxy.join(null, session);                                          //Initial join
+            view.reset();                                                       //Tell Server to set up a board
+
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -53,7 +49,7 @@ public class ConnectClient {
      */
     private static void usage()
     {
-        System.err.println ("Usage: java Nim <serverhost> <serverport> <clienthost> <clienport> <session>");
+        System.err.println ("Usage: java Nim <serverhost> <serverport> <session>");
         System.exit (1);
     }
 

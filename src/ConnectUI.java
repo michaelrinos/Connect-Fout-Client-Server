@@ -159,17 +159,6 @@ public class ConnectUI implements ModelListener {
         }
     }
 
-    /**
-     *
-     * */
-    private synchronized void H_take(int x, int y){
-        try {
-            viewListener.placed(this.id, x, y);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 // Exported operations.
 
     /**

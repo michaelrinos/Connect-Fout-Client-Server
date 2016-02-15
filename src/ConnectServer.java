@@ -1,5 +1,5 @@
-import java.net.InetSocketAddress;
-import java.net.DatagramSocket;
+import java.net.*;
+import java.util.HashMap;
 
 /**
  * Class GoServer is the server main program for the Network Go Game. The
@@ -13,28 +13,32 @@ import java.net.DatagramSocket;
  */
 public class ConnectServer
 {
+
+    private static HashMap<SocketAddress,ViewProxy> proxyMap = new HashMap<>();
+
     /**
      * Main program.
-     *@exception  Exception thrown
+     *@exception `1 Exception thrown
      */
-    public static void main
-    (String[] args)
-            throws Exception
-    {
-        System.out.println("Server Started");
+    public static void main(String[] args) throws Exception {
         if (args.length != 2) usage();
+
         String host = args[0];
         int port = Integer.parseInt (args[1]);
 
-        DatagramSocket mailbox =
-                new DatagramSocket
-                        (new InetSocketAddress (host, port));
+        ServerSocket serverSocket = new ServerSocket();
+        serverSocket.bind(new InetSocketAddress(host, port));
 
-        MailboxManager manager = new MailboxManager (mailbox);
+        SessionManager sessionManager = new SessionManager();
 
-        for (;;)
-        {
-            manager.receiveMessage();
+        for (;;) {
+            Socket socket = serverSocket.accept();
+            ViewProxy proxy = proxyMap.get(socket);
+            if (proxy == null) {
+                proxy = new ViewProxy(socket);
+                proxy.setViewListener(sessionManager);
+                proxyMap.put(socket.getRemoteSocketAddress(), proxy);
+            }
         }
     }
 
@@ -43,7 +47,7 @@ public class ConnectServer
      */
     private static void usage()
     {
-        System.err.println ("Usage: java GoServer <host> <port>");
+        System.err.println ("Usage: java ConnectServer <host> <port>");
         System.exit (1);
     }
 

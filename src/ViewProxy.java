@@ -1,7 +1,7 @@
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketAddress;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+
 
 /**
  * Class ViewProxy provides the network proxy for the view object in the Network.
@@ -13,9 +13,9 @@ import java.net.SocketAddress;
 public class ViewProxy implements ModelListener {
 
 // Hidden data members.
-
-    private DatagramSocket mailbox;
-    private SocketAddress clientAddress;
+    private Socket socket;
+    private DataOutputStream out;
+    private DataInputStream in;
     private ViewListener viewListener;
 
 // Exported constructors.
@@ -23,15 +23,16 @@ public class ViewProxy implements ModelListener {
     /**
      * Construct a new view proxy.
      *
-     * @param  mailbox        Server's mailbox.
-     * @param  clientAddress  Client's mailbox address.
+     * @param  socket
      */
-    public ViewProxy
-    (DatagramSocket mailbox,
-     SocketAddress clientAddress)
-    {
-        this.mailbox = mailbox;
-        this.clientAddress = clientAddress;
+    public ViewProxy(Socket socket) {
+        this.socket = socket;
+        try {
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 // Exported operations.
@@ -41,150 +42,131 @@ public class ViewProxy implements ModelListener {
      *
      * @param  viewListener  View listener.
      */
-    public void setViewListener
-    (ViewListener viewListener)
-    {
+    public void setViewListener(ViewListener viewListener) {
         this.viewListener = viewListener;
-    }
-
-
-    /**
-     * Process a received datagram.
-     *
-     * @param  datagram  Datagram.
-     *
-     * @return  True to discard this view proxy, false otherwise.
-     *
-     * @exception  IOException
-     *     Thrown if an I/O error occurred.
-     */
-    public boolean process(DatagramPacket datagram) throws IOException {
-        boolean discard = false;
-        DataInputStream in = new DataInputStream(new ByteArrayInputStream(datagram.getData(), 0, datagram.getLength()));
-        String session;
-        int r, c;
-        byte b = in.readByte();
-        switch (b)
-        {
-            case 'J':
-                session = in.readUTF();
-                viewListener.join (ViewProxy.this, session);
-                break;
-            case 'P':
-                int id = in.readInt();
-                r = in.readInt();
-                c = in.readInt();
-                viewListener.placed (id, r, c);
-                break;
-            case 'N':
-                viewListener.newgame();
-                break;
-            case 'Q':
-                viewListener.quit();
-                discard =true;
-                break;
-            default:
-                System.err.println ("Bad message");
-                break;
-        }
-        return discard;
+        new ReaderThread().start();
     }
 
 
     // Implemented methods
     @Override
     public void id(int id) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('I');
         out.writeByte(id);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(new DatagramPacket(payload, payload.length, clientAddress));
     }
 
     @Override
     public void name(int id, String name) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('N');
         out.writeByte(id);
         out.writeUTF(name);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(new DatagramPacket(payload, payload.length, clientAddress));
     }
 
     @Override
     public void score(int id, int Score) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('S');
         out.writeByte(id);
         out.writeByte(Score);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(
-                new DatagramPacket(payload, payload.length, clientAddress));
     }
 
     @Override
     public void reset() throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('H');
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(
-                new DatagramPacket(payload, payload.length, clientAddress));
     }
 
     @Override
     public void move(int id, int x, int y) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('M');
         out.writeByte(id);
         out.writeByte(x);
         out.writeByte(y);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(
-                new DatagramPacket(payload, payload.length, clientAddress));
     }
 
     @Override
     public void turn(int id) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('T');
         out.writeByte(id);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(
-                new DatagramPacket(payload, payload.length, clientAddress));
     }
 
     @Override
     public void win(int id) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('W');
         out.writeByte(id);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(
-                new DatagramPacket(payload, payload.length, clientAddress));
     }
 
     @Override
     public void quit() throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('Q');
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send(
-                new DatagramPacket(payload, payload.length, clientAddress));
+    }
+
+    /**
+     * Class ReaderThread receives messages from the network, decodes them, and
+     * invokes the proper methods to process them.
+     */
+    private class ReaderThread extends Thread {
+        public void run() {
+            try {
+                for (;;) {
+                    String session;
+                    
+                    byte t2 = in.readByte();
+                    if (t2 == 'J'){
+                        session = in.readUTF();
+                        viewListener.join(ViewProxy.this, session);
+                    }
+                    if (t2 == 'P'){
+                        int id = in.readByte();
+                        int r = in.readByte();
+                        int c = in.readByte();
+                        System.out.println("ID: "+ id);
+                        System.out.println("X: "+ r);
+                        System.out.println("Y: "+ c);
+                    }
+                    System.out.println(t2);
+
+
+                    /*byte b = in.readByte();
+                    System.out.println(b);
+
+                    switch (b)
+                    {
+                        case 'J':
+                            session = in.readUTF();
+                            System.out.println("Received J");
+                            viewListener.join (ViewProxy.this, session);
+                            break;
+                        case 'P':
+                            System.out.println("Received P");
+                            int temp = in.readByte();
+                            System.out.println(temp);
+                            int id = in.readInt();
+                            System.out.println(id);
+                            int r = in.readInt();
+                            System.out.println(r);
+                            int c = in.readInt();
+                            System.out.println(c);
+                            viewListener.placed (id, r, c);
+                            break;
+                        case 'N':
+                            System.out.println("Received N");
+                            viewListener.newgame();
+                            break;
+                        case 'Q':
+                            System.out.println("Received Q");
+                            viewListener.quit();
+                            break;
+                        default:
+                            System.err.println ("Bad message");
+                            break;
+                    }*/
+                }
+            } catch (IOException exc) {
+            } finally {
+                try {
+                    socket.close();
+                } catch (IOException exc) {
+                }
+            }
+        }
     }
 }
