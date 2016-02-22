@@ -1,8 +1,4 @@
-import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Class SessionManager maintains the sessions' model objects in the Network Connect Four game server.
@@ -38,12 +34,12 @@ public class SessionManager
     public synchronized void join(ViewProxy proxy, String session) throws IOException {
         try {
             if (twoPlayers && model.getCount() !=0) {
-                model.addModelListener(proxy, 1, session);
+                this.model.addModelListener(proxy, 1, session);
                 proxy.setViewListener(model);
                 twoPlayers = false;
             } else {
-                model = new ConnectModel();
-                model.addModelListener(proxy, 0, session);
+                this.model = new ConnectModel();
+                this.model.addModelListener(proxy, 0, session);
                 proxy.setViewListener(model);
                 twoPlayers = true;
             }

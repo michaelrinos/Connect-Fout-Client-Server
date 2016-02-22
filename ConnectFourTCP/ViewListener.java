@@ -17,18 +17,6 @@ public interface ViewListener {
     public void join(ViewProxy proxy, String name) throws IOException;
 
     /**
-     * Sent to the server to report the start of a new game.
-     * @throws IOException
-     */
-    public void newgame() throws IOException;
-
-    /**
-     * Sent to the server to report one of the player's has left and shut everything down.
-     * @throws IOException
-     */
-    public void quit() throws IOException;
-
-    /**
      * Sent to the server to report one of the player's has placed a piece.
      * <id> is replaced with the players id
      * <x> is replaced with that player's move in the x-axis.
@@ -39,4 +27,16 @@ public interface ViewListener {
      * @throws IOException
      */
     public void placed(int id, int x, int y) throws IOException;
+
+    /**
+     * Sent to the server to report the start of a new game.
+     * @throws IOException
+     */
+    public void newgame() throws IOException;
+
+    /**
+     * Sent to the server to report one of the player's has left and shut everything down.
+     * @throws IOException
+     */
+    public void quit() throws IOException;
 }

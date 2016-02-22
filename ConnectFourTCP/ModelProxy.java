@@ -1,7 +1,6 @@
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketAddress;
+import java.net.Socket;
+import java.nio.charset.Charset;
 
 
 /**
@@ -15,8 +14,9 @@ public class ModelProxy implements ViewListener {
 
 // Hidden data members.
 
-    private DatagramSocket mailbox;
-    private SocketAddress destination;
+    private Socket socket;
+    private DataOutputStream out;
+    private DataInputStream in;
     private ModelListener modelListener;
 
 // Exported constructors.
@@ -26,9 +26,10 @@ public class ModelProxy implements ViewListener {
      *
      * @throws IOException Thrown if an I/O error occurred.
      */
-    public ModelProxy(DatagramSocket mailbox, SocketAddress destination) throws IOException {
-        this.mailbox = mailbox;
-        this.destination = destination;
+    public ModelProxy(Socket socket) throws IOException {
+        this.socket = socket;
+        out = new DataOutputStream(socket.getOutputStream());
+        in = new DataInputStream(socket.getInputStream());
     }
 
 // Exported operations.
@@ -47,18 +48,10 @@ public class ModelProxy implements ViewListener {
      * Tells server someone has joined
      */
     @Override
-    public void join
-    (ViewProxy proxy,
-     String session)
-            throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
+    public void join(ViewProxy proxy, String session) throws IOException {
+        System.out.println("Writting J and the "+ session+" <Byte> <UTF>");
         out.writeByte('J');
         out.writeUTF(session);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send
-                (new DatagramPacket(payload, payload.length, destination));
     }
 
     /**
@@ -71,16 +64,11 @@ public class ModelProxy implements ViewListener {
 
     @Override
     public void placed(int id, int x, int y) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
+        System.out.println("Sending: P "+id + "<Byte>  " + x+ "<Byte> " + y+ "<Byte>");
         out.writeByte('P');
-        out.writeInt(id);
-        out.writeInt(x);
-        out.writeInt(y);
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send
-                (new DatagramPacket(payload, payload.length, destination));
+        out.writeByte(id);
+        out.writeByte(x);
+        out.writeByte(y);
     }
 
     /**
@@ -90,13 +78,8 @@ public class ModelProxy implements ViewListener {
      */
     @Override
     public void newgame() throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('N');
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send
-                (new DatagramPacket(payload, payload.length, destination));
+        System.out.println((byte)'N');
     }
 
     /**
@@ -106,13 +89,8 @@ public class ModelProxy implements ViewListener {
      */
     @Override
     public void quit() throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('Q');
-        out.close();
-        byte[] payload = baos.toByteArray();
-        mailbox.send
-                (new DatagramPacket(payload, payload.length, destination));
+        System.out.println((byte)'Q');
     }
 
 // Hidden helper classes.
@@ -121,19 +99,11 @@ public class ModelProxy implements ViewListener {
      * Class ReaderThread receives messages from the network, decodes them, and
      * invokes the proper methods to process them.
      */
-    private class ReaderThread
-            extends Thread {
+    private class ReaderThread extends Thread {
         public void run() {
-            byte[] payload = new byte[128]; /* CAREFUL OF BUFFER SIZE! */
+
             try {
                 for (;;) {
-                    DatagramPacket packet =
-                            new DatagramPacket(payload, payload.length);
-                    mailbox.receive(packet);
-                    DataInputStream in =
-                            new DataInputStream
-                                    (new ByteArrayInputStream
-                                            (payload, 0, packet.getLength()));
                     int r, c;
                     byte b = in.readByte();
                     switch (b) {
@@ -142,8 +112,8 @@ public class ModelProxy implements ViewListener {
                             modelListener.id(id);
                             break;
                         case 'N':
-                            id = in .readByte();
-                            String name =  in.readUTF();
+                            id = in.readByte();
+                            String name = in.readUTF();
                             modelListener.name(id, name);
                             break;
                         case 'S':
@@ -178,7 +148,10 @@ public class ModelProxy implements ViewListener {
                 }
             } catch (IOException exc) {
             } finally {
-                mailbox.close();
+                try {
+                    socket.close();
+                } catch (IOException exc) {
+                }
             }
         }
     }
