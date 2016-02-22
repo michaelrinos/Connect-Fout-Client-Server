@@ -39,6 +39,7 @@ public class ConnectServer
                 proxy.setViewListener(sessionManager);
                 proxyMap.put(socket.getRemoteSocketAddress(), proxy);
             }
+
         }
     }
 

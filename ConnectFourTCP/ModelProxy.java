@@ -49,6 +49,7 @@ public class ModelProxy implements ViewListener {
      */
     @Override
     public void join(ViewProxy proxy, String session) throws IOException {
+        System.out.println("Writting J and the "+ session+" <Byte> <UTF>");
         out.writeByte('J');
         out.writeUTF(session);
     }
@@ -63,7 +64,7 @@ public class ModelProxy implements ViewListener {
 
     @Override
     public void placed(int id, int x, int y) throws IOException {
-        System.out.println("Sending: "+id + " " + x+ " " + y);
+        System.out.println("Sending: P "+id + "<Byte>  " + x+ "<Byte> " + y+ "<Byte>");
         out.writeByte('P');
         out.writeByte(id);
         out.writeByte(x);

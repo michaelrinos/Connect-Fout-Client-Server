@@ -30,6 +30,7 @@ public class ViewProxy implements ModelListener {
         try {
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
+            new ReaderThread().start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +45,6 @@ public class ViewProxy implements ModelListener {
      */
     public void setViewListener(ViewListener viewListener) {
         this.viewListener = viewListener;
-        new ReaderThread().start();
     }
 
 
@@ -105,60 +105,32 @@ public class ViewProxy implements ModelListener {
      */
     private class ReaderThread extends Thread {
         public void run() {
+
             try {
                 for (;;) {
-                    String session;
-                    
-                    byte t2 = in.readByte();
-                    if (t2 == 'J'){
-                        session = in.readUTF();
-                        viewListener.join(ViewProxy.this, session);
-                    }
-                    if (t2 == 'P'){
-                        int id = in.readByte();
-                        int r = in.readByte();
-                        int c = in.readByte();
-                        System.out.println("ID: "+ id);
-                        System.out.println("X: "+ r);
-                        System.out.println("Y: "+ c);
-                    }
-                    System.out.println(t2);
-
-
-                    /*byte b = in.readByte();
-                    System.out.println(b);
-
-                    switch (b)
-                    {
+                    int r, c;
+                    byte b = in.readByte();
+                    switch (b) {
                         case 'J':
-                            session = in.readUTF();
-                            System.out.println("Received J");
-                            viewListener.join (ViewProxy.this, session);
+                            String session = in.readUTF();
+                            viewListener.join(ViewProxy.this, session);
                             break;
                         case 'P':
-                            System.out.println("Received P");
-                            int temp = in.readByte();
-                            System.out.println(temp);
-                            int id = in.readInt();
-                            System.out.println(id);
-                            int r = in.readInt();
-                            System.out.println(r);
-                            int c = in.readInt();
-                            System.out.println(c);
-                            viewListener.placed (id, r, c);
+                            int id = in.readByte();
+                            r = in.readByte();
+                            c = in.readByte();
+                            viewListener.placed(id,r,c);
                             break;
                         case 'N':
-                            System.out.println("Received N");
                             viewListener.newgame();
                             break;
                         case 'Q':
-                            System.out.println("Received Q");
                             viewListener.quit();
                             break;
                         default:
-                            System.err.println ("Bad message");
+                            System.err.println("Bad message");
                             break;
-                    }*/
+                    }
                 }
             } catch (IOException exc) {
             } finally {
