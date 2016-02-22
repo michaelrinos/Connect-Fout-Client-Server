@@ -47,10 +47,7 @@ public class ModelProxy implements ViewListener {
      * Tells server someone has joined
      */
     @Override
-    public void join
-    (ViewProxy proxy,
-     String session)
-            throws IOException {
+    public void join(ViewProxy proxy, String session) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('J');

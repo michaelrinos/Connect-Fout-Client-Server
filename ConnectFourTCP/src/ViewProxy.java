@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 
 /**
@@ -14,8 +15,8 @@ public class ViewProxy implements ModelListener {
 
 // Hidden data members.
     private Socket socket;
-    private DataOutputStream out;
-    private DataInputStream in;
+    private PrintStream out;
+    private Scanner in;
     private ViewListener viewListener;
 
 // Exported constructors.
@@ -28,8 +29,8 @@ public class ViewProxy implements ModelListener {
     public ViewProxy(Socket socket) {
         this.socket = socket;
         try {
-            out = new DataOutputStream(socket.getOutputStream());
-            in = new DataInputStream(socket.getInputStream());
+            out = new PrintStream(socket.getOutputStream());
+            in = new Scanner(socket.getInputStream());
             new ReaderThread().start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,52 +52,43 @@ public class ViewProxy implements ModelListener {
     // Implemented methods
     @Override
     public void id(int id) throws IOException {
-        out.writeByte('I');
-        out.writeByte(id);
+        out.printf("id "+ id + "%n");
     }
 
     @Override
     public void name(int id, String name) throws IOException {
-        out.writeByte('N');
-        out.writeByte(id);
-        out.writeUTF(name);
+        out.printf("name "+ id + " " + name + "%n");
     }
 
     @Override
     public void score(int id, int Score) throws IOException {
-        out.writeByte('S');
-        out.writeByte(id);
-        out.writeByte(Score);
+        out.printf("score " + id + " " + Score + "%n");
     }
 
-    @Override
-    public void reset() throws IOException {
-        out.writeByte('H');
-    }
 
     @Override
     public void move(int id, int x, int y) throws IOException {
-        out.writeByte('M');
-        out.writeByte(id);
-        out.writeByte(x);
-        out.writeByte(y);
+        out.printf("move "+ id + " " + x + " " + y + "%n");
     }
 
     @Override
     public void turn(int id) throws IOException {
-        out.writeByte('T');
-        out.writeByte(id);
+        out.printf("turn "+ id + " %n");
     }
 
     @Override
     public void win(int id) throws IOException {
-        out.writeByte('W');
-        out.writeByte(id);
+        out.printf("win "+ id +" %n");
+    }
+
+    @Override
+    public void reset() throws IOException {
+        out.printf("reset %n");
     }
 
     @Override
     public void quit() throws IOException {
-        out.writeByte('Q');
+        out.printf("quit %n");
     }
 
     /**
@@ -107,29 +99,29 @@ public class ViewProxy implements ModelListener {
         public void run() {
 
             try {
-                for (;;) {
-                    int r, c;
-                    byte b = in.readByte();
-                    switch (b) {
-                        case 'J':
-                            String session = in.readUTF();
-                            viewListener.join(ViewProxy.this, session);
-                            break;
-                        case 'P':
-                            int id = in.readByte();
-                            r = in.readByte();
-                            c = in.readByte();
-                            viewListener.placed(id,r,c);
-                            break;
-                        case 'N':
-                            viewListener.newgame();
-                            break;
-                        case 'Q':
-                            viewListener.quit();
-                            break;
-                        default:
-                            System.err.println("Bad message");
-                            break;
+                while (in.hasNextLine()) {
+                    String message = in.nextLine();
+                    Scanner s = new Scanner(message);
+                    String op = s.next();
+
+                    if (op.equals("join")){
+                        String name = s.next();
+                        viewListener.join(ViewProxy.this, name);
+                    }
+                    else if (op.equals("placed")){
+                        int id = s.nextInt();
+                        int x = s.nextInt();
+                        int y = s.nextInt();
+                        viewListener.placed(id, x, y);
+                    }
+                    else if (op.equals("newgame")){
+                        viewListener.newgame();
+                    }
+                    else if (op.equals("quit")){
+                        viewListener.quit();
+                    }
+                    else{
+                        System.err.println("Bad message");
                     }
                 }
             } catch (IOException exc) {

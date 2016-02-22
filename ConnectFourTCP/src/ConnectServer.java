@@ -2,7 +2,7 @@ import java.net.*;
 import java.util.HashMap;
 
 /**
- * Class GoServer is the server main program for the Network Go Game. The
+ * Class ConnectServer is the server main program for the Network Go Game. The
  * command line arguments specify the host and port to which the server should
  * listen for connections.
  * <P>

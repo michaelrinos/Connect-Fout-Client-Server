@@ -1,10 +1,9 @@
 import java.io.IOException;
 
 /**
- * Class GoModel provides the server-side model object in the Network Go Game.
+ * Class ConnectModel provides the server-side model object in the Network Go Game.
  *
  * @author  Michael E. Rinos
- * @version 1
  */
 public class ConnectModel implements ViewListener {
 

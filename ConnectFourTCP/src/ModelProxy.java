@@ -1,6 +1,6 @@
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.Charset;
+import java.util.Scanner;
 
 
 /**
@@ -15,8 +15,8 @@ public class ModelProxy implements ViewListener {
 // Hidden data members.
 
     private Socket socket;
-    private DataOutputStream out;
-    private DataInputStream in;
+    private PrintStream out;
+    private Scanner in;
     private ModelListener modelListener;
 
 // Exported constructors.
@@ -28,8 +28,8 @@ public class ModelProxy implements ViewListener {
      */
     public ModelProxy(Socket socket) throws IOException {
         this.socket = socket;
-        out = new DataOutputStream(socket.getOutputStream());
-        in = new DataInputStream(socket.getInputStream());
+        out = new PrintStream(socket.getOutputStream());
+        in = new Scanner(socket.getInputStream());
     }
 
 // Exported operations.
@@ -49,9 +49,7 @@ public class ModelProxy implements ViewListener {
      */
     @Override
     public void join(ViewProxy proxy, String session) throws IOException {
-        System.out.println("Writting J and the "+ session+" <Byte> <UTF>");
-        out.writeByte('J');
-        out.writeUTF(session);
+        out.printf("join " + session + "%n");
     }
 
     /**
@@ -64,11 +62,7 @@ public class ModelProxy implements ViewListener {
 
     @Override
     public void placed(int id, int x, int y) throws IOException {
-        System.out.println("Sending: P "+id + "<Byte>  " + x+ "<Byte> " + y+ "<Byte>");
-        out.writeByte('P');
-        out.writeByte(id);
-        out.writeByte(x);
-        out.writeByte(y);
+        out.printf("placed " + id + " " + x + " " + y + "%n");
     }
 
     /**
@@ -78,8 +72,7 @@ public class ModelProxy implements ViewListener {
      */
     @Override
     public void newgame() throws IOException {
-        out.writeByte('N');
-        System.out.println((byte)'N');
+        out.printf("newgame %n");
     }
 
     /**
@@ -89,8 +82,7 @@ public class ModelProxy implements ViewListener {
      */
     @Override
     public void quit() throws IOException {
-        out.writeByte('Q');
-        System.out.println((byte)'Q');
+        out.printf("quit%n");
     }
 
 // Hidden helper classes.
@@ -103,47 +95,48 @@ public class ModelProxy implements ViewListener {
         public void run() {
 
             try {
-                for (;;) {
-                    int r, c;
-                    byte b = in.readByte();
-                    switch (b) {
-                        case 'I':
-                            int id = in.readByte();
-                            modelListener.id(id);
-                            break;
-                        case 'N':
-                            id = in.readByte();
-                            String name = in.readUTF();
-                            modelListener.name(id, name);
-                            break;
-                        case 'S':
-                            id = in.readByte();
-                            int score = in.readByte();
-                            modelListener.score(id, score);
-                            break;
-                        case 'H':
-                            modelListener.reset();
-                            break;
-                        case 'M':
-                            id = r = in.readByte();
-                            r = in.readByte();
-                            c = in.readByte();
-                            modelListener.move(id, r, c);
-                            break;
-                        case 'T':
-                            id = in.readByte();
-                            modelListener.turn(id);
-                            break;
-                        case 'W':
-                            id = in.readByte();
-                            modelListener.win(id);
-                            break;
-                        case 'Q':
-                            modelListener.quit();
-                            break;
-                        default:
-                            System.err.println("Bad message");
-                            break;
+                while (in.hasNextLine()) {
+                    String message = in.nextLine();
+                    Scanner s = new Scanner(message);
+                    String op = s.next();
+
+                    if (op.equals("id")){
+                        int id = s.nextInt();
+                        modelListener.id(id);
+                    }
+                    else if (op.equals("name")){
+                        int id = s.nextInt();
+                        String name = s.next();
+                        modelListener.name(id,name);
+                    }
+                    else if (op.equals("score")){
+                        int id = s.nextInt();
+                        int score = s.nextInt();
+                        modelListener.score(id, score);
+
+                    }
+                    else if (op.equals("move")){
+                        int id = s.nextInt();
+                        int x = s.nextInt();
+                        int y = s.nextInt();
+                        modelListener.move(id, x, y);
+                    }
+                    else if (op.equals("turn")){
+                        int id = s.nextInt();
+                        modelListener.turn(id);
+                    }
+                    else if (op.equals("win")){
+                        int id = s.nextInt();
+                        modelListener.win(id);
+                    }
+                    else if (op.equals("reset")){
+                        modelListener.reset();
+                    }
+                    else if (op.equals("quit")){
+                        modelListener.quit();
+                    }
+                    else{
+                        System.err.println("Bad message");
                     }
                 }
             } catch (IOException exc) {
