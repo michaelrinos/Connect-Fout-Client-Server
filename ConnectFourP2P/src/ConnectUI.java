@@ -212,124 +212,80 @@ public class ConnectUI implements ModelListener {
 
     @Override
     public synchronized void id(int ids) throws IOException {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                id = ids;
-                boardPanel.setEnabled(false);
-            }
-        });
+        id = ids;
+        boardPanel.setEnabled(false);
     }
 
     @Override
     public synchronized void name(int ids, String name) throws IOException {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                if (id == ids){
-                    MahName = name + "= ";
-                    myNameField.setText(name);
-                }
-                else {
-                    newGameButton.setEnabled(true);
-                    TheirName = name + "= ";
-                    theirNameField.setText(name);
-                }
-            }
-        });
+
+        if (id == ids) {
+            MahName = name + "= ";
+            myNameField.setText(name);
+        } else {
+            newGameButton.setEnabled(true);
+            TheirName = name + "= ";
+            theirNameField.setText(name);
+        }
     }
 
     @Override
     public synchronized void score(int ids, int Score) throws IOException {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                if (id == ids){
-                    MahWins = Score;
-                    myNameField.setText(MahName + String.valueOf(MahWins));
-                }
-                else {
-                    TheirWins = Score;
-                    theirNameField.setText(TheirName + String.valueOf(TheirWins));
-                }
-            }
-        });
+        if (id == ids) {
+            MahWins = Score;
+            myNameField.setText(MahName + String.valueOf(MahWins));
+        } else {
+            TheirWins = Score;
+            theirNameField.setText(TheirName + String.valueOf(TheirWins));
+        }
     }
 
     @Override
     public void move(int id, int x, int y) throws IOException {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                Piece p = new Piece(id);
-                board.setSpot(board.getNextY(y), y, p);
-                boardPanel.repaint();
-            }
-        });
+        Piece p = new Piece(id);
+        board.setSpot(board.getNextY(y), y, p);
+        boardPanel.repaint();
     }
 
     @Override
     public synchronized void reset() throws IOException {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                boardPanel.clear();
-                boardPanel.repaint();
-            }
-        });
+        boardPanel.clear();
+        boardPanel.repaint();
     }
-
 
     @Override
     public synchronized void turn(int ids) throws IOException {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                whoWonField.setText("");
-                if (id == ids){
-                    boardPanel.setEnabled(true);
+        whoWonField.setText("");
+        if (id == ids) {
+            boardPanel.setEnabled(true);
 
-                }
-                else{
-                    boardPanel.setEnabled(false);
-                }
-            }
-        });
+        } else {
+            boardPanel.setEnabled(false);
+
+        }
     }
 
     @Override
     public synchronized void win(int ids) throws IOException {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                boardPanel.setEnabled(false);
-                if (id == ids){
-                    String[] x =MahName.split("=");
-                    whoWonField.setText(x[0] + " wins!");
-                }
-                else if ( ids == 7){
-                    whoWonField.setText("Its a draw!");
-                }
-                else{
-                    String[] x =TheirName.split("=");
-                    whoWonField.setText(x[0] + " wins!");
-                }
 
-                myNameField.setText(MahName + MahWins);
-                theirNameField.setText(TheirName + TheirWins);
-            }
-        });
+        boardPanel.setEnabled(false);
+        if (id == ids) {
+            String[] x = MahName.split("=");
+            whoWonField.setText(x[0] + " wins!");
+        } else if (ids == 7) {
+            whoWonField.setText("Its a draw!");
+        } else {
+            String[] x = TheirName.split("=");
+            whoWonField.setText(x[0] + " wins!");
+        }
+
+        myNameField.setText(MahName + MahWins);
+        theirNameField.setText(TheirName + TheirWins);
     }
 
     @Override
     public synchronized void quit() {
-        onSwingThreadDo(new Runnable() {
-            @Override
-            public void run() {
-                System.exit(0);
-
-            }
-        });
+        System.exit(0);
     }
 
 }

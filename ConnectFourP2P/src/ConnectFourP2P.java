@@ -9,11 +9,11 @@ import java.util.HashMap;
  * Created by michael on 22/2/2016.
  */
 public class ConnectFourP2P {
-    private static HashMap<SocketAddress,ViewProxy> proxyMap = new HashMap<>();
+
+    private static ConnectModel model;
 
     /**
      * Main program.
-     *@exception `1 Exception thrown
      */
     public static void main(String[] args) throws Exception {
         if (args.length != 3) usage();
@@ -25,7 +25,7 @@ public class ConnectFourP2P {
         boolean client;
         Socket socket = new Socket();
         try {
-            socket.connect(new InetSocketAddress(host, port));
+            socket.connect(new InetSocketAddress(host, port));      //Connect to server
             client = true;
         }
         catch (IOException e) {
@@ -33,18 +33,22 @@ public class ConnectFourP2P {
         }
         System.out.println(client);
         if (client) {
-            ConnectModelClone model = new ConnectModelClone();
-            ConnectUI view = ConnectUI.create(session);
+
             ModelProxy proxy = new ModelProxy(socket);
-            model.setModelListener(view);
+            ConnectUI view = ConnectUI.create(session);
+
+            proxy.setModelListener(view);
             view.setViewListener(proxy);
-            proxy.setModelListener(model);
+
+            proxy.join(null, session);
+            view.reset();
+
         }
         else {
             ServerSocket serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(host, port));
 
-            ConnectModel model = new ConnectModel();
+            model = new ConnectModel();
             ConnectUI view = ConnectUI.create(session);
             model.addModelListener(view, 0, session);
             view.setViewListener(model);
@@ -71,20 +75,3 @@ public class ConnectFourP2P {
     }
 
 }
-/*
-        ServerSocket serverSocket = new ServerSocket();
-        serverSocket.bind(new InetSocketAddress(host, port));
-
-        SessionManager sessionManager = new SessionManager();
-
-        for (;;) {
-            Socket socket = serverSocket.accept();
-            ViewProxy proxy = proxyMap.get(socket);
-            if (proxy == null) {
-                proxy = new ViewProxy(socket);
-                proxy.setViewListener(sessionManager);
-                proxyMap.put(socket.getRemoteSocketAddress(), proxy);
-            }
-
-        }*/
-

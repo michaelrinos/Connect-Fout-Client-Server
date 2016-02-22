@@ -14,6 +14,7 @@ public class ConnectModel implements ViewListener {
     private int pCount = 0;
     private int whosTurn = 0;
     private static final int DRAW = 9;
+    private boolean twoPlayers = false;
     private static final int BOARD_ID = 5;
     private static final int NUMHEAPS = 7;
     private static final int NUMOBJECTS = 6;
@@ -43,6 +44,7 @@ public class ConnectModel implements ViewListener {
         if (p1 == null){        //First person joins
             p1 = new Player(id, name, modelListener);
 
+
             //Tell this player their id name name and score
             p1.getModelListener().id(p1.getId());
             p1.getModelListener().name(p1.getId(), p1.getName());
@@ -51,7 +53,6 @@ public class ConnectModel implements ViewListener {
         }
         else{                   //Second player joins
             p2 = new Player(id, name, modelListener);
-
             //Tell each player their id name and score as well as their opponents
             p2.getModelListener().id(p2.getId());
             p2.getModelListener().name(p2.getId(), p2.getName());
@@ -216,8 +217,15 @@ public class ConnectModel implements ViewListener {
      * @param  session  Session name.
      */
     @Override
-    public synchronized void join(ViewProxy proxy, String session) {}
+    public synchronized void join(ViewProxy proxy, String session) {
+        try {
+            this.addModelListener(proxy, 1, session);
+            proxy.setViewListener(ConnectModel.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
 
     /**
      * Takes a element/s off of the board for the player who is up

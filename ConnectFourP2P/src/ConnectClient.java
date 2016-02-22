@@ -28,8 +28,8 @@ public class ConnectClient {
         try {
             Socket socket = new Socket();
             socket.connect(new InetSocketAddress(serverhost, serverport));      //Connect to server
-            ModelProxy proxy = new ModelProxy(socket);
 
+            ModelProxy proxy = new ModelProxy(socket);
             ConnectUI view = ConnectUI.create(session);                         //Create the view
 
             proxy.setModelListener(view);                                       //Set the view for the proxy
