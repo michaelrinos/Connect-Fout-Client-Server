@@ -49,7 +49,7 @@ public class ConnectClient {
      */
     private static void usage()
     {
-        System.err.println ("Usage: java Connect <serverhost> <serverport> <session>");
+        System.err.println ("Usage: java ConnectClient <serverhost> <serverport> <session>");
         System.exit (1);
     }
 

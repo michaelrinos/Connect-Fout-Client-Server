@@ -7,6 +7,7 @@ public class ConnectBoard {
     public static final int BOARD_COLS = 6;
     public static final int BOARD_ROWS = 7;
     private static final int BoardID = 5;
+    private static final Piece bp = new Piece(BoardID);
     private Piece[][] Board;
     private int moveCount= 0;
 
@@ -19,7 +20,7 @@ public class ConnectBoard {
     public synchronized void clearBoard(){
         for (int i = BOARD_ROWS-1; i >= 0; i--) {
             for (int j = BOARD_COLS-1; j >= 0; j--) {
-                Board[i][j] = new Piece(BoardID);
+                Board[i][j] = bp;
             }
         }
     }
@@ -37,7 +38,7 @@ public class ConnectBoard {
 
     public synchronized Piece getSpot(int x, int y){
         if (x <0 || y < 0 || x > ROWS || y > COLS)
-            return null;
+            return bp;
         return Board[x][y];
     }
 

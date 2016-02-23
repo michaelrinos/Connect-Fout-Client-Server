@@ -49,7 +49,6 @@ public class ModelProxy implements ViewListener {
      */
     @Override
     public void join(ViewProxy proxy, String session) throws IOException {
-        System.out.println("Writting J and the "+ session+" <Byte> <UTF>");
         out.writeByte('J');
         out.writeUTF(session);
     }
@@ -64,7 +63,6 @@ public class ModelProxy implements ViewListener {
 
     @Override
     public void placed(int id, int x, int y) throws IOException {
-        System.out.println("Sending: P "+id + "<Byte>  " + x+ "<Byte> " + y+ "<Byte>");
         out.writeByte('P');
         out.writeByte(id);
         out.writeByte(x);
@@ -79,7 +77,6 @@ public class ModelProxy implements ViewListener {
     @Override
     public void newgame() throws IOException {
         out.writeByte('N');
-        System.out.println((byte)'N');
     }
 
     /**
@@ -90,7 +87,6 @@ public class ModelProxy implements ViewListener {
     @Override
     public void quit() throws IOException {
         out.writeByte('Q');
-        System.out.println((byte)'Q');
     }
 
 // Hidden helper classes.
