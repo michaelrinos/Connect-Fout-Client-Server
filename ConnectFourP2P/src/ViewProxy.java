@@ -96,6 +96,7 @@ public class ViewProxy implements ModelListener {
 
     @Override
     public void quit() throws IOException {
+        System.out.println("Telling it to quit");
         out.writeByte('Q');
     }
 

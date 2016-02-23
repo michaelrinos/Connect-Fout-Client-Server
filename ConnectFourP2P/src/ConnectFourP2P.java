@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.util.HashMap;
 
 /**
  * Created by michael on 22/2/2016.
@@ -11,6 +9,7 @@ import java.util.HashMap;
 public class ConnectFourP2P {
 
     private static ConnectModel model;
+    private static ConnectUI view;
 
     /**
      * Main program.
@@ -31,7 +30,6 @@ public class ConnectFourP2P {
         catch (IOException e) {
             client = false;
         }
-        System.out.println(client);
         if (client) {
 
             ModelProxy proxy = new ModelProxy(socket);
@@ -60,7 +58,6 @@ public class ConnectFourP2P {
             model.addModelListener(proxy, 1, session);
             proxy.setViewListener(model);
 
-
         }
 
     }
@@ -75,3 +72,17 @@ public class ConnectFourP2P {
     }
 
 }
+    /*ServerSocket serverSocket = new ServerSocket();
+serverSocket.bind(new InetSocketAddress(host, port));
+
+        model = new ConnectModel();
+        ConnectUI view = ConnectUI.create(session);
+        model.addModelListener(view, 0, session);
+        view.setViewListener(model);
+
+        socket = serverSocket.accept();
+        serverSocket.close();
+
+        ViewProxy proxy = new ViewProxy(socket);
+        model.addModelListener(proxy, 1, session);
+        proxy.setViewListener(model);*/

@@ -261,8 +261,8 @@ public class ConnectUI implements ModelListener {
 
         } else {
             boardPanel.setEnabled(false);
-
         }
+        boardPanel.repaint();
     }
 
     @Override
@@ -281,10 +281,12 @@ public class ConnectUI implements ModelListener {
 
         myNameField.setText(MahName + MahWins);
         theirNameField.setText(TheirName + TheirWins);
+        boardPanel.repaint();
     }
 
     @Override
     public synchronized void quit() {
+
         System.exit(0);
     }
 

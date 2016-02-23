@@ -218,13 +218,6 @@ public class ConnectModel implements ViewListener {
      */
     @Override
     public synchronized void join(ViewProxy proxy, String session) {
-        try {
-            this.addModelListener(proxy, 1, session);
-            proxy.setViewListener(ConnectModel.this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -234,7 +227,6 @@ public class ConnectModel implements ViewListener {
      */
     @Override
     public synchronized void placed(int id, int x, int y) throws IOException {
-
         Piece p = new Piece(id);
 
         if (whosTurn == p1.getId()){

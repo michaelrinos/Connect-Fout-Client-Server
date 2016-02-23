@@ -135,6 +135,7 @@ public class ModelProxy implements ViewListener {
                             modelListener.win(id);
                             break;
                         case 'Q':
+                            System.out.println("Im quiting");
                             modelListener.quit();
                             break;
                         default:
