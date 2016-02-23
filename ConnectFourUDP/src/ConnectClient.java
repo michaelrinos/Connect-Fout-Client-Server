@@ -17,9 +17,7 @@ public class ConnectClient {
      * @exception throws and catches BindException in case the port is in use and all other exceptions caught
      */
     public static void main(String[] args){
-        if (args.length != 5) {
-            usage();
-        }
+        if (args.length != 5) {usage();}
         String serverhost = args[0];
         int serverport = Integer.parseInt(args[1]);
         String clienthost = args[2];
@@ -53,7 +51,7 @@ public class ConnectClient {
      */
     private static void usage()
     {
-        System.err.println ("Usage: java Nim <serverhost> <serverport> <clienthost> <clienport> <session>");
+        System.err.println ("Usage: java ConnectClient <serverhost> <serverport> <clienthost> <clienport> <session>");
         System.exit (1);
     }
 
