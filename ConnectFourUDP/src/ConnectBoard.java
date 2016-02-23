@@ -37,7 +37,7 @@ public class ConnectBoard {
 
     public synchronized Piece getSpot(int x, int y){
         if (x <0 || y < 0 || x > ROWS || y > COLS)
-            return null;
+            return new Piece(BoardID);
         return Board[x][y];
     }
 
