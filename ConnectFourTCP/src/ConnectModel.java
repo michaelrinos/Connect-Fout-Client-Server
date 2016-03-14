@@ -84,7 +84,7 @@ public class ConnectModel implements ViewListener {
         for (int row = 0; row < NUMHEAPS; ++row) {
             int count = 0;
             // We will compare current element with the previous
-            for (int column = 1; column < NUMOBJECTS; ++column) {
+            for (int column = 0; column < NUMOBJECTS; ++column) {
                 if (p.getSpot(row,column).getOwner() != BOARD_ID &&
                         p.getSpot(row,column).getOwner() == p.getSpot(row,column-1).getOwner())
                     ++count;

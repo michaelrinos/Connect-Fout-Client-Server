@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Connect-Fout-Client-Server.iml" filepath="$PROJECT_DIR$/Connect-Fout-Client-Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ConnectFourTCP.iml" filepath="$PROJECT_DIR$/ConnectFourTCP.iml" />
     </modules>
   </component>
 </project>
