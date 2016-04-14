@@ -13,7 +13,7 @@ It then sets the SessionManager as the proxy's ViewListener. The SessionManager 
 
 Representation of SessionManager:
 
-![Alt text](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/fig9small.png)
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/fig9small.png)
 
 
 ### Peer-2-Peer Implementation
@@ -26,6 +26,6 @@ Otherwise the main thread catches and IOException which and therefore knows that
 Representation of the Peer-2-Peer connection:
 
 
-[https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/fig10.png]
+![Peer-2-Peer](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/fig10.png)
 
 
