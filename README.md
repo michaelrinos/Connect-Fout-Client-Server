@@ -5,7 +5,7 @@ By default both the TCP and UDP implementations use Binary encoding to transmit 
 
 The main points of this project are:
 - Java
-- Threading 
+- Threading
 - MVC
 - Swing
 - Network Communication (TCP and UDP)
@@ -13,10 +13,10 @@ The main points of this project are:
 
 ### Client Server Implementation
 
-The Server works by first parsing the input to get the host and port adress. 
+The Server works by first parsing the input to get the host and port adress.
 The Server then infinitley loops so that multiple sessions may be started.
 Within the loop the main thread gets blocked by the serversockets accept method which blocks until a client connects.
-At which point the server checks if that client has previously connected to the server, and if it hasn't it creates a new instance of the 
+At which point the server checks if that client has previously connected to the server, and if it hasn't it creates a new instance of the
 viewproxy object which is responsible for recieving messages from the client and reporting them to the underlying boardmodel (Except for the "Join" message which is reported to the SessionManager).
 It then sets the SessionManager as the proxy's ViewListener. The SessionManager has one job, it calls the "Join" method which determines if there is an open session or not. If there isn't one, a new ConnectModel instance is created and the sessionmanger waits unitl another session is available. Once the second client connects the Sessionmanager links the second client to the same ConnectModel that the first client is attached two and the game can commence.
 
@@ -87,4 +87,3 @@ It then sets the SessionManager as the proxy's ViewListener. The SessionManager 
 
 ###### Two sets of games going on simultaneously, The top two are the original players the bottom two are the new players who are independent of the top two.
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/Moves.png)
-
