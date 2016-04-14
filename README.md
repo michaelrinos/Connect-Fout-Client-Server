@@ -30,42 +30,24 @@ It then sets the SessionManager as the proxy's ViewListener. The SessionManager 
 
 ### Game Images:
 
-First Client Connects and must wait until another player joins.
+##### First Client Connects and must wait until another player joins.
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/FirstConnect.png)
 
-Secound Client Connects and the "New Game" button is enabled and the first player now has the ability to make a move
+##### Secound Client Connects and the "New Game" button is enabled and the first player now has the ability to make a move
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/SecoundConnect.png)
 
-Playthrough of the first game
+##### Playthrough of the first game
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/FirstMove.png)
 
-A player wins and the player scores are updated as well as the third box reports the winner to both players.
+##### A player wins and the player scores are updated as well as the third box reports the winner to both players.
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/FirstWin.png)
 
-A plater hits "New Game" and the board is reset.
+##### A plater hits "New Game" and the board is reset.
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/Reset.png)
 
- Two new players connect to the server.
+##### Two new players connect to the server.
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/TwoGames.png)
 
-Two sets of games going on simultaneously, The top two are the original players the bottom two are the new players who are independent of the top two.
+###### Two sets of games going on simultaneously, The top two are the original players the bottom two are the new players who are independent of the top two.
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/Moves.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
