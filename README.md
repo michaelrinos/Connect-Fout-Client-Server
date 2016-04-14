@@ -25,7 +25,7 @@ Otherwise the main thread catches and IOException which and therefore knows that
 
 Representation of the Peer-2-Peer connection:
 
-<div style="text-align:center">
+
 [https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/fig10.png]
-</div>
+
 
