@@ -13,9 +13,8 @@ It then sets the SessionManager as the proxy's ViewListener. The SessionManager 
 
 Representation of SessionManager:
 
-<div style="text-align:center">
 ![Alt text](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/fig9small.png)
-</div>
+
 
 ### Peer-2-Peer Implementation
 
