@@ -15,6 +15,8 @@ Representation of SessionManager:
 
 ![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/SessionManager.png)
 
+Representation of how the Client and Server communicate:
+
 ![Client/Server](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/ClSe.png)
 
 
