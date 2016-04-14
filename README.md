@@ -33,11 +33,11 @@ It then sets the SessionManager as the proxy's ViewListener. The SessionManager 
 |	id(int id)										| <ul> <li>'I' (1 byte)</li><li> id (integer, 1 byte)</li></ul>																																		|							|
 |	name(int id, String name)			| <ul> <li> 'N' (1 byte)</li><li> id (integer, 1 byte)</li><li> name (UTF-8 String)</li> </ul>						     									 	|				      |
 |	score(int id, int score)			| <ul> <li> 'S' (1 byte) </li><li> id (integer, 1 byte)</li><li> score (integer 1 byte)</li> </ul>																|							|
-|	reset()												| 	'H' (1 byte)																																																									|							|
+|	reset()												| 	'H' (1 byte)								|																|
 |	move(int id, int x, int y)		| <ul> <li> 'M' (1 byte) </li><li> id (integer, 1 byte) </li><li> x (integer, 1 byte) </li><li> y (integer, 1 byte) </li></ul>		|							|
 |	turn(int id)									| <ul>	<li> 'T' (1 byte) </li><li> id (integer, 1 byte) </li></ul>																																|				      |
 |	win(int id)										| <ul> <li> 'W'	(1 byte) </li><li> id (integer, 1 byte) </li></ul>																																|							|
-|	quit()												| 'Q' (1 byte)				|				|
+|	quit()												| 'Q' (1 byte)									|																|
 
 
 ##### Representation of how the Client and Server communicate:
