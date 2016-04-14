@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 /**
- * Class ConnectModel provides the server-side model object in the Network Go Game.
+ * Class ConnectModel provides the server-side model object in the Network Connect Four Game.
  *
  * @author  Michael E. Rinos
  */
@@ -20,7 +20,7 @@ public class ConnectModel implements ViewListener {
 // Exported constructors.
 
     /**
-     * Construct a new Go model.
+     * Construct a new Connect model.
      */
     public ConnectModel() {}
 
@@ -33,7 +33,7 @@ public class ConnectModel implements ViewListener {
 // Exported operations.
 
     /**
-     * Add the given model listener to this Nim Model
+     * Add the given model listener to this Connect Model
      * @param  modelListener  Model listener.
      * @param  id the players id
      * @param  name the name of the player

@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Class Player contains references to ids model score and name of each player in the nim game
  *

@@ -30,9 +30,9 @@ public class ConnectBoardPanel extends JPanel {
 // Exported constructors.
 
     /**
-     * Construct a new Go board panel.
+     * Construct a new Connect board panel.
      *
-     * @param board Go board.
+     * @param board Connect board.
      */
     public ConnectBoardPanel
     (ConnectBoard board) {
@@ -62,7 +62,7 @@ public class ConnectBoardPanel extends JPanel {
     }
 
     /**
-     * Determine the row on the Go board that was clicked.
+     * Determine the row on the Connect Board that was clicked.
      *
      * @param e Mouse event.
      * @return Row index.
@@ -73,7 +73,7 @@ public class ConnectBoardPanel extends JPanel {
     }
 
     /**
-     * Determine the column on the Go board that was clicked.
+     * Determine the column on the Connect board that was clicked.
      *
      * @param e Mouse event.
      * @return Column index.
@@ -91,7 +91,7 @@ public class ConnectBoardPanel extends JPanel {
 // Hidden operations.
 
     /**
-     * Paint this Go board panel in the given graphics context.
+     * Paint this Connect board panel in the given graphics context.
      *
      * @param g Graphics context.
      */

@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
- * Class ConnectUI provides the user interface for the Nim network game.
+ * Class ConnectUI provides the user interface for the Connect Four network game.
  *
  * @author  Michael Rinos
  */
@@ -39,7 +39,7 @@ public class ConnectUI implements ModelListener {
 // Hidden constructors.
 
     /**
-     * Construct a new Nim UI.
+     * Construct a new Connect UI.
      */
     private ConnectUI(String name) {
         frame = new JFrame ("Connect Four -- " + name);
@@ -162,14 +162,14 @@ public class ConnectUI implements ModelListener {
 // Exported operations.
 
     /**
-     * An object holding a reference to a Nim UI.
+     * An object holding a reference to a Connect UI.
      */
     private static class UIRef {
         public ConnectUI ui;
     }
 
     /**
-     * Construct a new Nim UI.
+     * Construct a new Connect UI.
      */
     public static ConnectUI create(String name) {
         final UIRef ref = new UIRef();onSwingThreadDo (new Runnable() {
