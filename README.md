@@ -20,13 +20,52 @@ At which point the server checks if that client has previously connected to the 
 viewproxy object which is responsible for recieving messages from the client and reporting them to the underlying boardmodel (Except for the "Join" message which is reported to the SessionManager).
 It then sets the SessionManager as the proxy's ViewListener. The SessionManager has one job, it calls the "Join" method which determines if there is an open session or not. If there isn't one, a new ConnectModel instance is created and the sessionmanger waits unitl another session is available. Once the second client connects the Sessionmanager links the second client to the same ConnectModel that the first client is attached two and the game can commence.
 
-Representation of how the Client and Server communicate:
+##### Representation of how the Client and Server communicate:
 
-![Client/Server](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/ClSe.png)
+![Client/Server](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/ClSe.png)
 
-Representation of SessionManager:
+##### Representation of SessionManager:
 
-![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/SessionManager.png)
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/SessionManager.png)
+
+### Game Images:
+
+First Client Connects and must wait until another player joins.
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/FirstConnect.png)
+
+Secound Client Connects and the "New Game" button is enabled and the first player now has the ability to make a move
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/SecoundConnect.png)
+
+Playthrough of the first game
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/FirstMove.png)
+
+A player wins and the player scores are updated as well as the third box reports the winner to both players.
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/FirstWin.png)
+
+A plater hits "New Game" and the board is reset.
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/Reset.png)
+
+ Two new players connect to the server.
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/TwoGames.png)
+
+Two sets of games going on simultaneously, The top two are the original players the bottom two are the new players who are independent of the top two.
+![Session Manager](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/Moves.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
