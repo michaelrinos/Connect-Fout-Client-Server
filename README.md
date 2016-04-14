@@ -20,6 +20,43 @@ At which point the server checks if that client has previously connected to the 
 viewproxy object which is responsible for recieving messages from the client and reporting them to the underlying boardmodel (Except for the "Join" message which is reported to the SessionManager).
 It then sets the SessionManager as the proxy's ViewListener. The SessionManager has one job, it calls the "Join" method which determines if there is an open session or not. If there isn't one, a new ConnectModel instance is created and the sessionmanger waits unitl another session is available. Once the second client connects the Sessionmanager links the second client to the same ConnectModel that the first client is attached two and the game can commence.
 
+|	ViewListener Methods	|	Binary Encoding		|	Textual Encoding	|
+|-------------------------------|-------------------------------|-------------------------------|
+| placed(int id, int x, int y)  | <ul> <li>'P' (1 byte)</li>
+					<li> id (integer, 1 byte)</li>
+					<li> x (integer, byte)</li>
+					<li> y (integer, 1 byte)</li></ul> | 		|
+|	join(String name)	|	<ul> <li>'J' (UTF-8 1 byte)</li>
+					<li> name (UTF-8 String) </li></ul>| 		|
+| 	newgame()		|	'N' (1 byte)		|				|
+| 	quit()			|	'Q" (1 byte)		|				|
+
+
+|	ModelListener Methods	|	Binary Encoding		|	Texual Encoding		|
+|-------------------------------|-------------------------------|-------------------------------|
+|	id(int id)		| <ul> <li>'I' (1 byte)</li>
+					<li> id (integer, 1 byte)</li></ul>	|				|
+|	name(int id, String name)| <ul> <li> 'N' (1 byte)</li>
+					<li> id (integer, 1 byte)</li>
+					<li> name (UTF-8 String)</li> </ul>						      |				      |
+|	score(int id, int score)| <ul> <li> 'S' (1 byte) </li>
+					<li> id (integer, 1 byte)</li>
+					<li> score (integer 1 byte)</li> </ul>
+				|				|
+|	reset()			| 	'H' (1 byte)		|				|
+|	move(int id, int x, int y)| <ul> <li> 'M' (1 byte) </li>
+					<li> id (integer, 1 byte) </li>
+					<li> x (integer, 1 byte) </li>
+					<li> y (integer, 1 byte) </li></ul>
+				|				|
+|	turn(int id)		| <ul>	<li> 'T' (1 byte) </li>
+					<li> id (integer, 1 byte) </li></ul>						      |				      |
+|	win(int id)		| <ul> <li> 'W'	(1 byte) </li>
+					<li> id (integer, 1 byte) </li></ul>
+				|				|
+|	quit()			| 'Q' (1 byte)				|				|
+
+
 ##### Representation of how the Client and Server communicate:
 
 ![Client/Server](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/Images/ClSe.png)
