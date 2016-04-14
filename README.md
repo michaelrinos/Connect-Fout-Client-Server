@@ -22,14 +22,10 @@ It then sets the SessionManager as the proxy's ViewListener. The SessionManager 
 
 |	ViewListener Methods	|	Binary Encoding		|	Textual Encoding	|
 |-------------------------------|-------------------------------|-------------------------------|
-| placed(int id, int x, int y)  | <ul> <li>'P' (1 byte)</li>
-					<li> id (integer, 1 byte)</li>
-					<li> x (integer, byte)</li>
-					<li> y (integer, 1 byte)</li></ul> | 		|
-|	join(String name)	|	<ul> <li>'J' (UTF-8 1 byte)</li>
-					<li> name (UTF-8 String) </li></ul>| 		|
-| 	newgame()		|	'N' (1 byte)		|				|
-| 	quit()			|	'Q" (1 byte)		|				|
+| placed(int id, int x, int y)  | <ul> <li>'P' (1 byte)</li><li> id (integer, 1 byte)</li><li> x (integer, byte)</li><li> y (integer, 1 byte)</li></ul> | 		|
+|	join(String name)	|	<ul> <li>'J' (UTF-8 1 byte)</li><li> name (UTF-8 String) </li></ul>		|		|
+| 	newgame()										|	'N' (1 byte)									|																|
+| 	quit()											|	'Q" (1 byte)									|																|
 
 
 |	ModelListener Methods	|	Binary Encoding		|	Texual Encoding		|
