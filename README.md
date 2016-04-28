@@ -8,5 +8,5 @@ Otherwise the main thread catches and IOException which and therefore knows that
 Representation of the Peer-2-Peer connection:
 
 
-![Peer-2-Peer](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/tree/master/images/P2P.png)
+![Peer-2-Peer](https://raw.githubusercontent.com/michaelrinos/Connect-Fout-Client-Server/master/images/P2P.png)
 
